@@ -1,11 +1,9 @@
 
 # docker-youtrack
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/dzwicker/docker-youtrack/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 *Easy youtrack deployment using docker*
 
 These Dockerfiles allow you to easily build images to deploy your own [youtrack](http://www.jetbrains.com/youtrack/) instance.
-It's free for up to ten users.
 
 ## Disclaimer
 Besides that, as always, use these scripts with care.
@@ -15,8 +13,6 @@ Don't forget to back up your data very often, too.
 ## Requirements
 Docker has to run. It supports many platforms like Ubuntu, Arch Linux, Mac OS X, Windows, EC2 or the Google Cloud.
 [Click here](http://docs.docker.io/en/latest/installation/) to get specific infos on how to install on your platform.
-
-You also need some RAM for youtrack, but I can't really tell how much. Maybe about 200-300MB.
 
 ## Oh nice! How do I do it?
 1. Install docker. [It's not very hard.](http://docs.docker.io/en/latest/installation/)
@@ -33,11 +29,16 @@ Now open your browser and point it to `http://localhost:8080` and rejoice. :)
   
   `mkdir -p /var/lib/youtrack`
 
-2. Create container!
+2. Permissions!
 
-  `docker run -t -i -p 127.0.0.1:8080:8080 -v /var/lib/youtrack:/var/lib/youtrack --name docker-youtrack dzwicker/docker-youtrack`
+  The Dockerfile creates a youtrack user to run `youtrack` without root permissions. This user has a `UID` of `2000`. Please make sure to add a user to your host system with this `UID` and allow him to read and write to `/var/lib/youtrack`. The name of this host user in not important. (You can use a the user group, too. It has the `GID` of 2000 :)
+  
+3. Create container!
 
-3. Stop it!
+   Replace the value for the environment variable `YOUTRACK_BASE_URL`!
+
+  `docker create -t -i -p 127.0.0.1:8080:8080 -v /var/lib/youtrack:/var/lib/youtrack -e YOUTRACK_BASE_URL='http(s):\\your.domain.com' --name docker-youtrack dzwicker/docker-youtrack`
+
 4. Create upstart configuration `/etc/init/docker-youtrack.conf`
 
 	``` bash
