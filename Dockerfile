@@ -8,7 +8,7 @@ ENV HOME="/root" DEBIAN_FRONTEND=noninteractive
 RUN \
     locale-gen en_US.UTF-8 && \
     echo LANG=\"en_US.UTF-8\" > /etc/default/locale && \
-    echo "Europe/Berlin" > /etc/timezone
+    echo "America/New_York" > /etc/timezone
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN \
